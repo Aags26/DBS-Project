@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.bphc.dbs_project.fragments.auth.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_pageOne"
+            app:destination="@id/pageOne" />
+    </fragment>
+    <fragment
+        android:id="@+id/pageOne"
+        android:name="com.bphc.dbs_project.fragments.auth.registration.PageOne"
+        android:label="fragment_page_one"
+        tools:layout="@layout/fragment_page_one" >
+        <action
+            android:id="@+id/action_pageOne_to_pageTwo"
+            app:destination="@id/pageTwo" />
+    </fragment>
+    <fragment
+        android:id="@+id/pageTwo"
+        android:name="com.bphc.dbs_project.fragments.auth.registration.PageTwo"
+        android:label="PageTwo"
+        tools:layout="@layout/fragment_page_two">
+        <action
+            android:id="@+id/action_pageTwo_to_pageThreeDoctor"
+            app:destination="@id/pageThreeDoctor" />
+        <action
+            android:id="@+id/action_pageTwo_to_pageThreePatient"
+            app:destination="@id/pageThreePatient" />
+    </fragment>
+    <fragment
+        android:id="@+id/pageThreeDoctor"
+        android:name="com.bphc.dbs_project.fragments.auth.registration.PageThreeDoctor"
+        android:label="fragment_page_three_doctor"
+        tools:layout="@layout/fragment_page_three_doctor" />
+    <fragment
+        android:id="@+id/pageThreePatient"
+        android:name="com.bphc.dbs_project.fragments.auth.registration.PageThreePatient"
+        android:label="fragment_page_three_patient"
+        tools:layout="@layout/fragment_page_three_patient" />
+
+
+</navigation>
