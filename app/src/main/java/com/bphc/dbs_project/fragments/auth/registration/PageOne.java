@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 
 import com.bphc.dbs_project.R;
 import com.bphc.dbs_project.helper.Progress;
+import com.bphc.dbs_project.prefs.SharedPrefs;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,13 +27,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AUTH;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.EMAIL;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.NAME;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PASSWORD;
+
 public class PageOne extends Fragment implements View.OnClickListener {
 
 
     private static final int RC_SIGN_UP = 9001;
     private TextInputLayout inputName, inputEmail, inputPassword;
-    private String name, email, password;
+    private String name, email, password = "-";
     private GoogleSignInClient mGoogleSignInClient;
+    private int auth;
 
     @Nullable
     @Override
@@ -75,7 +82,7 @@ public class PageOne extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_UP) {
+        if (requestCode == RC_SIGN_UP && resultCode == -1) {
             Progress.showProgress(true, "Signing In...");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -93,16 +100,28 @@ public class PageOne extends Fragment implements View.OnClickListener {
     }
 
     private void updateUI(GoogleSignInAccount account) {
-        Toast.makeText(getContext(), account.getIdToken(), Toast.LENGTH_SHORT).show();
+
+        name = account.getDisplayName();
+        email = account.getEmail();
+        auth = 0;
+
+        proceed();
     }
 
     private void customSignUp() {
         if (!validateName() | !validateEmail() | !validatePassword())
             return;
+        auth = 1;
         proceed();
     }
 
     private void proceed() {
+
+        SharedPrefs.setStringParams(requireContext(), NAME, name);
+        SharedPrefs.setStringParams(requireContext(), EMAIL, email);
+        SharedPrefs.setStringParams(requireContext(), PASSWORD, password);
+        SharedPrefs.setIntParams(requireContext(), AUTH, auth);
+
         final NavController navController = Navigation.findNavController(requireView());
         navController.navigate(R.id.action_pageOne_to_pageTwo);
     }

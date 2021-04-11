@@ -38,7 +38,7 @@ dependencies {
     //Google Play Services
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
-    def nav_version = "2.3.4"
+    def nav_version = "2.3.5"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
@@ -49,7 +49,11 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // Jetpack Compose Integration
-    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"
+
+    implementation "androidx.asynclayoutinflater:asynclayoutinflater:1.0.0"
+
+    implementation "com.facebook.shimmer:shimmer:0.1.0@aar"
 
     //Network Requests Library
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

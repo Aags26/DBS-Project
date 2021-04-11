@@ -15,16 +15,24 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bphc.dbs_project.R;
+import com.bphc.dbs_project.helper.APIClient;
+import com.bphc.dbs_project.helper.Webservices;
+import com.bphc.dbs_project.models.ServerResponse;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PageThreeDoctor extends Fragment implements View.OnClickListener {
 
     private TextInputLayout selectHospital, selectDepartment, hospital, department;
     private AutoCompleteTextView textViewHospital, textViewDepartment;
     private ConstraintLayout hospitalLocation;
-
+    private Webservices webservices;
+    ArrayList<String> hospitals;
 
     @Nullable
     @Override
@@ -40,7 +48,8 @@ public class PageThreeDoctor extends Fragment implements View.OnClickListener {
         textViewDepartment = view.findViewById(R.id.auto_department);
         department = view.findViewById(R.id.new_department_name);
 
-        ArrayList<String> hospitals = new ArrayList<>();
+        webservices = APIClient.getRetrofitInstance().create(Webservices.class);
+
         hospitals.add("NIL");
         hospitals.add("abcd");
         hospitals.add("efgh");
@@ -65,6 +74,23 @@ public class PageThreeDoctor extends Fragment implements View.OnClickListener {
         });
 
         return view;
+    }
+
+    private void getHospitals() {
+        hospitals = new ArrayList<>();
+        Call<ServerResponse> call = webservices.getHospitals();
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                ServerResponse serverResponse = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

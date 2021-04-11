@@ -19,8 +19,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.bphc.dbs_project.PatientActivity;
 import com.bphc.dbs_project.R;
+import com.bphc.dbs_project.helper.APIClient;
 import com.bphc.dbs_project.helper.Progress;
+import com.bphc.dbs_project.helper.Webservices;
+import com.bphc.dbs_project.models.Result;
+import com.bphc.dbs_project.models.ServerResponse;
+import com.bphc.dbs_project.prefs.SharedPrefs;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,11 +35,20 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.EMAIL;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.NAME;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PHONE;
+
 public class SignInFragment extends Fragment implements View.OnClickListener {
 
     private static final int RC_SIGN_IN = 9001;
     private TextInputLayout inputEmail, inputPassword;
-    private String email, password;
+    private String email, password = "-";
     private GoogleSignInClient mGoogleSignInClient;
     private ProgressDialog progressDialog;
 
@@ -90,7 +105,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN && resultCode == -1) {
-            Progress.showProgress(true, "Signing In...");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -107,7 +121,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateUI(GoogleSignInAccount account) {
-//        Toast.makeText(getContext(), account.getIdToken(), Toast.LENGTH_SHORT).show();
+        email = account.getEmail();
+        checkCredentials();
     }
 
     private void customSignIn() {
@@ -119,7 +134,29 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkCredentials() {
+        Webservices webservices = APIClient.getRetrofitInstance().create(Webservices.class);
 
+        Call<ServerResponse> call = webservices.loginPatient(email, password);
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                ServerResponse serverResponse = response.body();
+                if (!serverResponse.isError()) {
+                    Result result = serverResponse.getResult();
+                    SharedPrefs.setStringParams(requireContext(), NAME, result.getName());
+                    SharedPrefs.setStringParams(requireContext(), EMAIL, result.getEmail());
+                    SharedPrefs.setStringParams(requireContext(), PHONE, result.getPhone());
+
+                    //Progress.showProgress(true, "Signing In...");
+                    startActivity(new Intent(requireContext(), PatientActivity.class));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     private boolean validateEmail() {

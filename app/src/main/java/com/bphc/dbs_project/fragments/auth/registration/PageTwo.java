@@ -23,6 +23,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bphc.dbs_project.R;
+import com.bphc.dbs_project.prefs.SharedPrefs;
 import com.google.android.gms.auth.api.credentials.Credential;
 import com.google.android.gms.auth.api.credentials.CredentialPickerConfig;
 import com.google.android.gms.auth.api.credentials.Credentials;
@@ -32,6 +33,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
+
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PHONE;
 
 public class PageTwo extends Fragment implements View.OnClickListener {
 
@@ -137,6 +140,9 @@ public class PageTwo extends Fragment implements View.OnClickListener {
             case R.id.resend_otp:
                 break;
             case R.id.button_next:
+
+                SharedPrefs.setStringParams(requireContext(), PHONE, phone);
+
                 int radioId =radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = requireView().findViewById(radioId);
                 String profession = radioButton.getText().toString();
