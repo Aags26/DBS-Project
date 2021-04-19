@@ -39,12 +39,21 @@
         android:id="@+id/pageThreeDoctor"
         android:name="com.bphc.dbs_project.fragments.auth.registration.PageThreeDoctor"
         android:label="fragment_page_three_doctor"
-        tools:layout="@layout/fragment_page_three_doctor" />
+        tools:layout="@layout/fragment_page_three_doctor" >
+        <action
+            android:id="@+id/action_pageThreeDoctor_to_pageFourDoctor"
+            app:destination="@id/pageFourDoctor" />
+    </fragment>
     <fragment
         android:id="@+id/pageThreePatient"
         android:name="com.bphc.dbs_project.fragments.auth.registration.PageThreePatient"
         android:label="fragment_page_three_patient"
         tools:layout="@layout/fragment_page_three_patient" />
+    <fragment
+        android:id="@+id/pageFourDoctor"
+        android:name="com.bphc.dbs_project.fragments.auth.registration.PageFourDoctor"
+        android:label="fragment_page_four_doctor"
+        tools:layout="@layout/fragment_page_four_doctor" />
 
 
 </navigation>

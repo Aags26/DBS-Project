@@ -1,5 +1,6 @@
 package com.bphc.dbs_project.fragments.auth.registration;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bphc.dbs_project.PatientActivity;
 import com.bphc.dbs_project.R;
 import com.bphc.dbs_project.helper.APIClient;
 import com.bphc.dbs_project.helper.Webservices;
@@ -27,9 +29,11 @@ import static com.bphc.dbs_project.prefs.SharedPrefsConstants.ADDRESS;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AGE;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AUTH;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.EMAIL;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.ID;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.NAME;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PASSWORD;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PHONE;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.SESSION_FLAG;
 
 public class PageThreePatient extends Fragment implements View.OnClickListener {
 
@@ -76,8 +80,15 @@ public class PageThreePatient extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 ServerResponse serverResponse = response.body();
-                if (!serverResponse.isError())
-                    Toast.makeText(requireContext(), "abcd", Toast.LENGTH_SHORT).show();
+                if (serverResponse != null) {
+                    if (!serverResponse.isError()) {
+                        SharedPrefs.setIntParams(requireContext(), ID, serverResponse.getResult().getPatient().getPId());
+                        SharedPrefs.setIntParams(requireContext(), SESSION_FLAG, 1);
+                        Toast.makeText(requireContext(), "Successfully Registered", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(requireContext(), PatientActivity.class));
+                        requireActivity().finish();
+                    }
+                }
             }
 
             @Override

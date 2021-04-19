@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:theme="@style/TextInputStyle"
     tools:context=".fragments.auth.SignInFragment">
 
@@ -54,9 +55,9 @@
 
     <Button
         android:id="@+id/custom_sign_in_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_margin="4dp"
         android:text="Sign In"
         app:layout_constraintEnd_toEndOf="@id/user_password_sign_in"
         app:layout_constraintStart_toStartOf="@id/user_password_sign_in"
@@ -119,7 +120,7 @@
         android:id="@+id/user_sign_up_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Do Not Have an Account. Sign Up!"
+        android:text="Do Not Have an Account? Sign Up!"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

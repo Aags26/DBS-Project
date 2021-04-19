@@ -3,6 +3,9 @@ package com.bphc.dbs_project.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SharedPrefs {
 
     private static final String PREFS_NAME = "Shared_prefs";
@@ -19,8 +22,10 @@ public class SharedPrefs {
         return _sharedPreferences;
     }
 
-    public static SharedPreferences.Editor clearPrefsEditor(Context context) {
-        return getInstance(context).edit().clear();
+    public static void clearPrefsEditor(Context context) {
+        SharedPreferences.Editor editor = getInstance(context).edit();
+        editor.clear();
+        editor.apply();
     }
 
     public static void removeKey(Context context, String paramKey) {
@@ -47,6 +52,16 @@ public class SharedPrefs {
         editor.putString(paramKey, paramValue);
         editor.apply();
 
+    }
+
+    public static HashSet<String> getStringArrayParams(Context context, String paramKey) {
+        return (HashSet<String>) getInstance(context).getStringSet(paramKey, null);
+    }
+
+    public static void setStringArrayParams(Context context, String paramKey, Set<String> paramValue) {
+        SharedPreferences.Editor editor = getInstance(context).edit();
+        editor.putStringSet(paramKey, paramValue);
+        editor.apply();
     }
 
     public static boolean getBooleanParams(Context context, String paramKey) {

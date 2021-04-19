@@ -1,5 +1,6 @@
 package com.bphc.dbs_project.fragments.auth.registration;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bphc.dbs_project.R;
+import com.bphc.dbs_project.helper.APIClient;
 import com.bphc.dbs_project.helper.Progress;
+import com.bphc.dbs_project.helper.Webservices;
+import com.bphc.dbs_project.models.ServerResponse;
 import com.bphc.dbs_project.prefs.SharedPrefs;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,6 +30,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AUTH;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.EMAIL;
@@ -40,11 +48,14 @@ public class PageOne extends Fragment implements View.OnClickListener {
     private String name, email, password = "-";
     private GoogleSignInClient mGoogleSignInClient;
     private int auth;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page_one, container, false);
+
+        progressDialog = Progress.getProgressDialog(getContext());
 
         inputName = view.findViewById(R.id.user_name_sign_up);
         inputEmail = view.findViewById(R.id.user_email_sign_up);
@@ -103,16 +114,16 @@ public class PageOne extends Fragment implements View.OnClickListener {
 
         name = account.getDisplayName();
         email = account.getEmail();
-        auth = 0;
+        auth = 1;
 
-        proceed();
+        checkCredentials();
     }
 
     private void customSignUp() {
         if (!validateName() | !validateEmail() | !validatePassword())
             return;
-        auth = 1;
-        proceed();
+        checkCredentials();
+        auth = 0;
     }
 
     private void proceed() {
@@ -122,8 +133,41 @@ public class PageOne extends Fragment implements View.OnClickListener {
         SharedPrefs.setStringParams(requireContext(), PASSWORD, password);
         SharedPrefs.setIntParams(requireContext(), AUTH, auth);
 
+        Progress.dismissProgress(progressDialog);
+
         final NavController navController = Navigation.findNavController(requireView());
         navController.navigate(R.id.action_pageOne_to_pageTwo);
+    }
+
+    private void checkCredentials() {
+        Webservices webservices = APIClient.getRetrofitInstance().create(Webservices.class);
+        Call<ServerResponse> call = webservices.checkCredentials(
+                email,
+                password,
+                auth
+        );
+
+        call.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                ServerResponse serverResponse = response.body();
+                if (serverResponse != null) {
+                    if (serverResponse.isError()) {
+                        inputEmail.setError("This email already exists");
+                        inputPassword.setError("This password already exists");
+                    } else {
+                        inputEmail.setError(null);
+                        inputPassword.setError(null);
+                        proceed();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     private boolean validateName() {

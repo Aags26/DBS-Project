@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:theme="@style/TextInputStyle"
+    tools:context=".BookAppointmentActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/doctor_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="12dp"/>
+
+    <TextView
+        android:id="@+id/book_doctor_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/doctor_image"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Doc_Name" />
+
+    <TextView
+        android:id="@+id/book_dept_hosp_name"
+        android:layout_width="0dp"
+        app:layout_constrainedWidth="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/book_doctor_name"
+        app:layout_constraintTop_toBottomOf="@id/book_doctor_name"
+        tools:text="Hospital" />
+
+    <ImageView
+        android:id="@+id/book_image_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_phone"
+        app:layout_constraintStart_toStartOf="@id/doctor_image"
+        app:layout_constraintTop_toBottomOf="@id/doctor_image" />
+
+    <TextView
+        android:id="@+id/book_doctor_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/book_image_phone"
+        app:layout_constraintStart_toEndOf="@id/book_image_phone"
+        app:layout_constraintTop_toTopOf="@id/book_image_phone"
+        tools:text="1234567890" />
+
+    <ImageView
+        android:id="@+id/book_image_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_email"
+        app:layout_constraintStart_toStartOf="@id/book_image_phone"
+        app:layout_constraintTop_toBottomOf="@id/book_image_phone" />
+
+    <TextView
+        android:id="@+id/book_doctor_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/book_image_email"
+        app:layout_constraintStart_toEndOf="@id/book_image_email"
+        app:layout_constraintTop_toTopOf="@id/book_image_email"
+        tools:text="abc@gmail.com" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/book_image_email" />
+
+    <TextView
+        android:id="@+id/text_slots_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view1"
+        tools:text="Today, 12th April: " />
+
+    <TextView
+        android:id="@+id/text_no_slots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No slots available today"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_slots_today"
+        app:layout_constraintBottom_toTopOf="@id/view2"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_slots_today"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/text_slots_today" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/recycler_slots_today" />
+
+    <TextView
+        android:id="@+id/text_day_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:background="@drawable/custom_text_date"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view2"
+        tools:text="13th April" />
+
+    <TextView
+        android:id="@+id/text_day_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_text_date"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/text_day_2"
+        app:layout_constraintStart_toEndOf="@id/text_day_0"
+        app:layout_constraintTop_toTopOf="@id/text_day_0"
+        tools:text="14th April" />
+
+    <TextView
+        android:id="@+id/text_day_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/custom_text_date"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_day_0"
+        tools:text="15th April" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="90dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="@id/text_day_2"
+        app:layout_constraintStart_toStartOf="@id/text_day_0"
+        app:layout_constraintTop_toBottomOf="@id/view2" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_other_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/view3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

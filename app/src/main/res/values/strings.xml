@@ -1,4 +1,49 @@
 <resources>
-    <string name="app_name">DBS-Project</string>
+    <string name="app_name">Appointfix</string>
     <string name="client_id">1041279263916-4ntal7746nfqmo10un8qu9lbgc4k2rgh.apps.googleusercontent.com</string>
+    <string-array name="doctor_slots">
+        <item>9AM - 10AM</item>
+        <item>10AM - 11AM</item>
+        <item>11AM - 12PM</item>
+        <item>12PM - 1PM</item>
+        <item>1PM - 2PM</item>
+        <item>2PM - 3PM</item>
+        <item>3PM - 4PM</item>
+        <item>4PM - 5PM</item>
+        <item>5PM - 6PM</item>
+        <item>6PM - 7PM</item>
+    </string-array>
+
+    <string-array name="colors">
+        <item>#4C44E9</item>
+        <item>#44E9D9</item>
+        <item>#C744E9</item>
+        <item>#F38715</item>
+        <item>#15F3AE</item>
+        <item>#4CC6F9</item>
+        <item>#8CF94C</item>
+        <item>#F94CEB</item>
+        <item>#F94C4C</item>
+        <item>#EFF94C</item>
+        <item>#4C44E9</item>
+        <item>#44E9D9</item>
+        <item>#C744E9</item>
+    </string-array>
+
+    <string-array name="slots">
+        <item>-1</item>
+        <item>1PM - 2PM</item>
+        <item>2PM - 3PM</item>
+        <item>3PM - 4PM</item>
+        <item>4PM - 5PM</item>
+        <item>5PM - 6PM</item>
+        <item>6PM - 7PM</item>
+        <item>-1</item>
+        <item>-1</item>
+        <item>9AM - 10AM</item>
+        <item>10AM - 11AM</item>
+        <item>11AM - 12PM</item>
+        <item>12PM - 1PM</item>
+    </string-array>
+
 </resources>
