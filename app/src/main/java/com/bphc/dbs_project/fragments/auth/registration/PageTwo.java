@@ -57,7 +57,7 @@ public class PageTwo extends Fragment implements View.OnClickListener, MySMSBroa
     private Button button_getOtp;
     private TextView resendOtp;
     private String phone, otp, regex;
-    private int RESOLVE_HINT = 7;
+    private final int RESOLVE_HINT = 7;
     private CredentialsClient mCredentialsClient;
     private Webservices webservices;
     private MySMSBroadcastReceiver smsReceiver;

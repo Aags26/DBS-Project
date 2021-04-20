@@ -45,7 +45,7 @@ public class PageOne extends Fragment implements View.OnClickListener {
 
     private static final int RC_SIGN_UP = 9001;
     private TextInputLayout inputName, inputEmail, inputPassword;
-    private String name, email, password = "-";
+    private String name, email, password = "";
     private GoogleSignInClient mGoogleSignInClient;
     private int auth;
     private ProgressDialog progressDialog;
@@ -114,7 +114,7 @@ public class PageOne extends Fragment implements View.OnClickListener {
 
         name = account.getDisplayName();
         email = account.getEmail();
-        auth = 1;
+        auth = 0;
 
         checkCredentials();
     }
@@ -123,7 +123,7 @@ public class PageOne extends Fragment implements View.OnClickListener {
         if (!validateName() | !validateEmail() | !validatePassword())
             return;
         checkCredentials();
-        auth = 0;
+        auth = 1;
     }
 
     private void proceed() {

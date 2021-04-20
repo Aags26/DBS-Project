@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,11 @@ import com.bphc.dbs_project.models.Result;
 import com.bphc.dbs_project.models.ServerResponse;
 import com.bphc.dbs_project.prefs.SharedPrefs;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -33,6 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AUTH;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.ID;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.IMAGE;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PROFESSION;
@@ -72,12 +79,35 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SharedPrefs.getIntParams(requireContext(), AUTH) == 0)
+                    signOut();
                 SharedPrefs.clearPrefsEditor(requireContext());
-                startActivity(new Intent(requireContext(), MainActivity.class));
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
         return view;
+    }
+
+    private void signOut() {
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id))
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
+
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(requireActivity(), new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(requireContext(), "Signed out", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

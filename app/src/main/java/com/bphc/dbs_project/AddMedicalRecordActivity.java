@@ -80,11 +80,11 @@ public class AddMedicalRecordActivity extends AppCompatActivity {
 
         Button buttonCreateRecord = findViewById(R.id.button_create_records);
         buttonCreateRecord.setOnClickListener(v -> {
-            if (!validateDiagnosis() | !validateDOE() | !validateDescription()) {
-                if (SharedPrefs.getStringParams(this, PROFESSION, "").equals("patient")) {
-                    if (!validateDoctor())
-                        return;
-                } else
+            if (SharedPrefs.getStringParams(this, PROFESSION, "").equals("patient")) {
+                if (!validateDiagnosis() | !validateDOE() | !validateDoctor() | !validateDescription())
+                    return;
+            } else {
+                if (!validateDiagnosis() | !validateDOE() | !validateDescription())
                     return;
             }
 

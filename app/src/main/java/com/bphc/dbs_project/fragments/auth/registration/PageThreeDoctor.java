@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -40,7 +41,8 @@ import static com.bphc.dbs_project.prefs.SharedPrefsConstants.HOSPITAL;
 
 public class PageThreeDoctor extends Fragment implements View.OnClickListener {
 
-    private TextInputLayout selectHospital, selectDepartment, hospital, department;
+    private TextInputLayout hospital;
+    private TextInputLayout department;
     private AutoCompleteTextView textViewHospital, textViewDepartment;
     private ConstraintLayout hospitalLocation;
     private Webservices webservices;
@@ -81,16 +83,26 @@ public class PageThreeDoctor extends Fragment implements View.OnClickListener {
 
         buttonProceed.setOnClickListener(this);
 
+        textViewHospital.setOnItemClickListener((parent, view1, position, id) -> {
+            if (textViewHospital.getText().toString().equals("--Deselect--"))
+                textViewHospital.setText("");
+        });
+
+        textViewDepartment.setOnItemClickListener((parent, view12, position, id) -> {
+            if (textViewDepartment.getText().toString().equals("--Deselect--"))
+                textViewDepartment.setText("");
+        });
+
         return view;
     }
 
     private void initUi(View view) {
-        selectHospital = view.findViewById(R.id.hospital);
+        TextInputLayout selectHospital = view.findViewById(R.id.hospital);
         textViewHospital = view.findViewById(R.id.auto_hospital);
         hospital = view.findViewById(R.id.new_hospital_name);
         hospitalLocation = view.findViewById(R.id.hospital_location);
 
-        selectDepartment = view.findViewById(R.id.department);
+        TextInputLayout selectDepartment = view.findViewById(R.id.department);
         textViewDepartment = view.findViewById(R.id.auto_department);
         department = view.findViewById(R.id.new_department_name);
 
@@ -110,6 +122,7 @@ public class PageThreeDoctor extends Fragment implements View.OnClickListener {
                 if (serverResponse != null) {
                     Result result = serverResponse.getResult();
                     hospitals.clear();
+                    hospitals.add("--Deselect--");
                     for (Hospital hospital : result.getHospitals())
                         hospitals.add(hospital.getHospitalName());
                     ArrayAdapter<String> hospitalAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, hospitals);
@@ -133,6 +146,7 @@ public class PageThreeDoctor extends Fragment implements View.OnClickListener {
                 if (serverResponse != null) {
                     Result result = serverResponse.getResult();
                     departments.clear();
+                    departments.add("--Deselect--");
                     for (Department department : result.getDepartments())
                         departments.add(department.getName());
                     ArrayAdapter<String> departmentAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item, departments);

@@ -21,7 +21,11 @@
             android:id="@+id/auto_hospital"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Select a hospital" />
+            android:hint="Select a hospital"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,7 +108,11 @@
             android:id="@+id/auto_department"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Select a department" />
+            android:hint="Select a department"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

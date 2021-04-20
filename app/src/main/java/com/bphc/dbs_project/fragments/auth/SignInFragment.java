@@ -49,6 +49,7 @@ import retrofit2.Retrofit;
 
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.ADDRESS;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AGE;
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AUTH;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.DEPARTMENT;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.EMAIL;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.HOSPITAL;
@@ -147,13 +148,14 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
     private void updateUI(GoogleSignInAccount account) {
         email = account.getEmail();
+        SharedPrefs.setIntParams(requireContext(), AUTH, 0);
         checkCredentials();
     }
 
     private void customSignIn() {
         if (!validateEmail() | !validatePassword())
             return;
-
+        SharedPrefs.setIntParams(requireContext(), AUTH, 1);
         checkCredentials();
 
     }

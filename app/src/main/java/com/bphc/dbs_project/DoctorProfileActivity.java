@@ -1,5 +1,6 @@
 package com.bphc.dbs_project;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bphc.dbs_project.adapters.SlotAdapter;
 import com.bphc.dbs_project.app.Constants;
@@ -24,6 +26,11 @@ import com.bphc.dbs_project.models.ImageResponse;
 import com.bphc.dbs_project.models.ServerResponse;
 import com.bphc.dbs_project.prefs.SharedPrefs;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
@@ -32,6 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.bphc.dbs_project.prefs.SharedPrefsConstants.AUTH;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.ID;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.IMAGE;
 import static com.bphc.dbs_project.prefs.SharedPrefsConstants.PROFESSION;
@@ -74,8 +82,13 @@ public class DoctorProfileActivity extends AppCompatActivity {
 
         Button buttonLogout = findViewById(R.id.button_logout);
         buttonLogout.setOnClickListener(v -> {
-            SharedPrefs.clearPrefsEditor(DoctorProfileActivity.this);
-            startActivity(new Intent(DoctorProfileActivity.this, MainActivity.class));
+            if (SharedPrefs.getIntParams(this, AUTH) == 0)
+                signOut();
+            SharedPrefs.clearPrefsEditor(this);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
 
         textAddProfile = findViewById(R.id.text_profile_pic);
@@ -86,6 +99,24 @@ public class DoctorProfileActivity extends AppCompatActivity {
             startActivityForResult(intent, IMAGE_PICK);
         });
 
+    }
+
+    private void signOut() {
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id))
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(DoctorProfileActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     @Override

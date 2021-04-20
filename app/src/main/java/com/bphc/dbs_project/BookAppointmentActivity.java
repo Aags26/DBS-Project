@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.bphc.dbs_project.helper.Webservices;
 import com.bphc.dbs_project.models.Doctor;
 import com.bphc.dbs_project.models.ServerResponse;
 import com.bphc.dbs_project.prefs.SharedPrefs;
+import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +51,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
     private Webservices webservices;
     private TextView textNoSlots;
 
+    private ImageView doctorImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
 
         Intent intent = getIntent();
         doctor = intent.getParcelableExtra("doctor");
+
+        Glide.with(this).load(doctor.getImage()).into(doctorImage);
 
         webservices = APIClient.getRetrofitInstance().create(Webservices.class);
         getAvailableAppointments();
@@ -101,6 +107,8 @@ public class BookAppointmentActivity extends AppCompatActivity implements View.O
         doctorHospDept = findViewById(R.id.book_dept_hosp_name);
         doctorPhone = findViewById(R.id.book_doctor_phone);
         doctorEmail = findViewById(R.id.book_doctor_email);
+
+        doctorImage = findViewById(R.id.doctor_image);
 
         todaySlots = findViewById(R.id.text_slots_today);
         recyclerTodaySlots = findViewById(R.id.recycler_slots_today);
